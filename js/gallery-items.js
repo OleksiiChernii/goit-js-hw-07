@@ -117,5 +117,6 @@ document.onkeydown = function(evt) {
   } 
   if (isEscape && instance) {
       instance.close();
+      instance = null;
   }
 };
