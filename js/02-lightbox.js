@@ -9,8 +9,7 @@ galleryItems.forEach(element => gallery.insertAdjacentElement('beforeend', inser
 
 function insertImage(element){
     let link = createLink(element);
-    let image = createImage(element);
-    link.appendChild(image);
+    link.appendChild(createImage(element));
     return link;
 }
 
@@ -30,4 +29,4 @@ function createImage(parent){
     return img;
 }
 
-let lightbox = new SimpleLightbox('.gallery a', { docClose: true});
+let lightbox = new SimpleLightbox('.gallery a', { docClose: true, captionsData: 'alt', captionDelay: 250});
