@@ -5,27 +5,30 @@ console.log(galleryItems);
 
 const gallery = document.querySelector('.gallery');
 
-galleryItems.forEach(element => gallery.insertAdjacentElement('beforeend', insertImage(element)));
+gallery.append(...insertImages(galleryItems));
 
-function insertImage(element){
+gallery.addEventListener('click', event => event.preventDefault);
+
+function insertImages(elements) {
+  return elements.map((element) => {
     let link = createLink(element);
     link.appendChild(createImage(element));
     return link;
+  });
 }
 
-function createLink(parent){
+function createLink(element){
     let link = document.createElement('a');
     link.classList.add('gallery__item');
-    link.setAttribute('href', parent.original);
-    link.addEventListener('click', event => event.preventDefault());
+    link.setAttribute('href', element.original);
     return link;
 }
 
-function createImage(parent){
+function createImage(element){
     let img = document.createElement('img');
     img.classList.add('gallery__image');
-    img.setAttribute('src', parent.preview);
-    img.setAttribute('alt', parent.description);
+    img.setAttribute('src', element.preview);
+    img.setAttribute('alt', element.description);
     return img;
 }
 

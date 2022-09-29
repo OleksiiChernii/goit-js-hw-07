@@ -4,41 +4,51 @@ import { galleryItems } from "./gallery-items.js";
 console.log(galleryItems);
 
 const gallery = document.querySelector('.gallery');
-galleryItems.forEach((element) => {
-  gallery.insertAdjacentElement('beforeend', insertImage(element));
+  
+gallery.append(...insertImage(galleryItems));
+
+gallery.addEventListener('click', event => {
+  if(event.target.nodeName == 'IMG'){
+    event.preventDefault();
+    let imgOriginal = event.target.dataset.source;
+    let imgAlt = event.target.alt;
+    showOriginalImage(imgOriginal, imgAlt);
+  }
 });
 
 let instance;
 
-function insertImage(parent) {
+function insertImage(items) {
+  return items.map(item => createElement(item));
+}
+
+function createElement(item){
   let element = document.createElement('div');
   element.classList.add('gallery__item');
-  let link = createLink();
-  let img = createImage(parent);
+  let link = createLink(item);
+  let img = createImage(item);
   element.appendChild(link);
   link.appendChild(img);
   return element;
 }
 
-function createLink() {
+function createLink(item) {
   let link = document.createElement('a');
   link.classList.add('gallery__link');
-  link.setAttribute('href', parent.original);
-  link.addEventListener('click', (event) => event.preventDefault());
+  link.setAttribute('href', item.original);
   return link;
 }
 
-function createImage(parent) {
+function createImage(item) {
   let img = document.createElement('img');
   img.classList.add('gallery__image');
-  img.addEventListener('click', () => showOriginalImage(parent));
-  img.setAttribute('src', parent.preview);
-  img.setAttribute('alt', parent.description);
-  img.setAttribute('data-source', parent.original);
+  img.setAttribute('src', item.preview);
+  img.setAttribute('alt', item.description);
+  img.setAttribute('data-source', item.original);
   return img;
 }
 
-function showOriginalImage({ original, description }) {
+function showOriginalImage(original, description) {
   instance = basicLightbox.create(`
     <div class="modal">
         <img src=${original} alt=${description}/>
